@@ -7,8 +7,8 @@ namespace ChatService.ConnectionMapping
     {
 
 
-        private readonly Dictionary<T, HashSet<string>> _connections =
-            new Dictionary<T, HashSet<string>>();
+        private readonly Dictionary<T,string> _connections =
+            new Dictionary<T, string>();
 
         public int Count
         {
@@ -20,53 +20,38 @@ namespace ChatService.ConnectionMapping
 
         public void Add(T key, string connectionId)
         {
-            lock (_connections)
-            {
-                HashSet<string> connections;
-                if (!_connections.TryGetValue(key, out connections))
-                {
-                    connections = new HashSet<string>();
-                    _connections.Add(key, connections);
-                }
+            var hasValue = _connections.ContainsKey(key);
 
-                lock (connections)
-                {
-                    connections.Add(connectionId);
-                }
+            if(!hasValue)
+            {
+                _connections[key] = connectionId;
+
             }
         }
 
-        public IEnumerable<string> GetConnections(T key)
+        public string? GetConnections(T key)
         {
-            HashSet<string> connections;
-            if (_connections.TryGetValue(key, out connections))
-            {
-                return connections;
-            }
+            var hasValue = _connections.ContainsKey(key);
 
-            return Enumerable.Empty<string>();
+            if (hasValue)
+            {
+                string? value = _connections[key];
+
+                return value;
+            }
+            return null;
         }
 
-        public void Remove(T key, string connectionId)
+        public void Remove(T key)
         {
-            lock (_connections)
+            var hasValue = _connections.ContainsKey(key);
+
+            if (!hasValue)
             {
-                HashSet<string> connections;
-                if (!_connections.TryGetValue(key, out connections))
-                {
-                    return;
-                }
-
-                lock (connections)
-                {
-                    connections.Remove(connectionId);
-
-                    if (connections.Count == 0)
-                    {
-                        _connections.Remove(key);
-                    }
-                }
+                return;
             }
+
+            _connections.Remove(key);
         }
     }
 }

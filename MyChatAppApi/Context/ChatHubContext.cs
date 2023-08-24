@@ -14,10 +14,10 @@ namespace MyChatAppApi.Context
         {
             _configuration = configuration;
         }
-
+        public DbSet<Client> Clients { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Room> Rooms { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<GroupSubscribtion> Subscribtions { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -1,19 +1,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MyChatAppApi.Context;
 using MyChatAppApi.MainHub;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using MyChatAppApi.Repository.Interfaces;
+using MyChatAppApi.Repository.Services;
+using MyChatAppApi.Utilites;
 
 namespace MyChatAppApi
 {
@@ -29,6 +25,13 @@ namespace MyChatAppApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
+            services.AddSingleton<ChatHubContext>();
+            services.AddScoped<CommonUtillites>();
+            services.AddScoped<IGroupSubscribtionRepositoryService, GroupSubscribtionRepositoryService>();
+            services.AddScoped<IMessageRepositoryService, MessageRepositoryService>();
+            services.AddScoped<IRoomRepositoryService, RoomRepositoryService>();
+            services.AddScoped<IUserRepositoryService, UserRepositoryService>();
 
             services.AddControllers();
             services.AddSignalR();
@@ -49,6 +52,13 @@ namespace MyChatAppApi
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MyChatAppApi v1"));
             }
 
+            app.UseCors(policy =>
+            {
+                policy.AllowAnyHeader();
+                policy.AllowAnyMethod();
+                policy.AllowAnyOrigin();
+            });
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -57,7 +67,6 @@ namespace MyChatAppApi
                 endpoint.MapHub<ChatHub>("/chatHub");
             });
 
-            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
             app.UseEndpoints(endpoints =>
             {

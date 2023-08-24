@@ -11,8 +11,8 @@ using MyChatAppApi.Context;
 namespace MyChatAppApi.Migrations
 {
     [DbContext(typeof(ChatHubContext))]
-    [Migration("20230804221044_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230809162420_recreate")]
+    partial class recreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,6 +21,26 @@ namespace MyChatAppApi.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("MyChatAppApi.Models.GroupSubscribtion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("GroupId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("JoinedTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid>("SubscriberId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Subscribtions");
+                });
 
             modelBuilder.Entity("MyChatAppApi.Models.Message", b =>
                 {
@@ -37,10 +57,15 @@ namespace MyChatAppApi.Migrations
                     b.Property<Guid?>("RoomId")
                         .HasColumnType("char(36)");
 
+                    b.Property<string>("SenderName")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Text")
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RoomId");
 
                     b.ToTable("Messages");
                 });
@@ -51,10 +76,7 @@ namespace MyChatAppApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("ChatStarter")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("ChatTarget")
+                    b.Property<Guid>("GroupOwnerId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("LastMessage")
@@ -80,6 +102,18 @@ namespace MyChatAppApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("MyChatAppApi.Models.Message", b =>
+                {
+                    b.HasOne("MyChatAppApi.Models.Room", null)
+                        .WithMany("Messages")
+                        .HasForeignKey("RoomId");
+                });
+
+            modelBuilder.Entity("MyChatAppApi.Models.Room", b =>
+                {
+                    b.Navigation("Messages");
                 });
 #pragma warning restore 612, 618
         }

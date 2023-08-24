@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyChatAppApi.Context;
 
@@ -10,9 +11,11 @@ using MyChatAppApi.Context;
 namespace MyChatAppApi.Migrations
 {
     [DbContext(typeof(ChatHubContext))]
-    partial class ChatHubContextModelSnapshot : ModelSnapshot
+    [Migration("20230809163932_newlyaddedproperty")]
+    partial class newlyaddedproperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

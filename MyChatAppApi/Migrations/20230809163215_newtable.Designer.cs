@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyChatAppApi.Context;
 
@@ -10,9 +11,11 @@ using MyChatAppApi.Context;
 namespace MyChatAppApi.Migrations
 {
     [DbContext(typeof(ChatHubContext))]
-    partial class ChatHubContextModelSnapshot : ModelSnapshot
+    [Migration("20230809163215_newtable")]
+    partial class newtable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,15 +43,12 @@ namespace MyChatAppApi.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Type")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("UserName")
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clients");
+                    b.ToTable("clients");
                 });
 
             modelBuilder.Entity("MyChatAppApi.Models.GroupSubscribtion", b =>
@@ -125,6 +125,17 @@ namespace MyChatAppApi.Migrations
                     b.HasIndex("ClientId");
 
                     b.ToTable("Rooms");
+                });
+
+            modelBuilder.Entity("MyChatAppApi.Models.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("MyChatAppApi.Models.Message", b =>
