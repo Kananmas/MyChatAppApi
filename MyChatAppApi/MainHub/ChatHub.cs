@@ -16,7 +16,7 @@ namespace MyChatAppApi.MainHub
     public class ChatHub : Hub
     {
 
-        private readonly static BaseConnectionMapping<string> _connections = new BaseConnectionMapping<string>();
+        private readonly static BaseConnectionMapping<Guid> _connections = new BaseConnectionMapping<Guid>();
         private readonly IGroupSubscribtionRepositoryService _groupSubscribtionRepositoryService;
         private readonly IRoomRepositoryService _roomRepositoryService;
         private readonly IMessageRepositoryService _messageRepositoryService;
@@ -92,19 +92,11 @@ namespace MyChatAppApi.MainHub
 
             var messages = await _messageRepositoryService.GetMessagesByRoomId(ID);
             var subsribtions = await _groupSubscribtionRepositoryService.GetAllSubsByGroupId(ID);
-            var userList = new List<string>();
-
-            foreach (var sub in subsribtions)
-            {
-                var targetUser = await _userRepositoryService.GetUserById(sub.SubscriberId);
-
-                if (targetUser != null) userList.Add(targetUser.UserName);
-            }
 
      
-            foreach (var user in userList)
+            foreach (var user in subsribtions)
             {
-                string userConnection = _connections.GetConnections(user);
+                string userConnection = _connections.GetConnections(user.SubscriberId);
                 if(userConnection != "" && userConnection != null) await Clients.Client(userConnection).SendAsync("RecivieChatMessages",messages.OrderBy(message => message.CreatedDate).ToList() );
             }
         }
@@ -186,10 +178,12 @@ namespace MyChatAppApi.MainHub
         {
             
             var commonUtilites = new CommonUtillites(_contextAccessor);
-            var name = commonUtilites.GetUserName();
+            var ID = commonUtilites.GetUserID();
             var connectionId = Context.ConnectionId;
 
-            _connections.Add(name, connectionId);
+
+
+            _connections.Add(ID, connectionId);
 
 
             return base.OnConnectedAsync();
@@ -198,9 +192,10 @@ namespace MyChatAppApi.MainHub
         public override Task OnDisconnectedAsync(Exception exception)
         {
             var commonUtilites = new CommonUtillites(_contextAccessor);
-            var name = commonUtilites.GetUserName();
-           
-            _connections.Remove(name);
+            var ID = commonUtilites.GetUserID();
+
+
+            _connections.Remove(ID);
 
             return base.OnDisconnectedAsync(exception);
         }

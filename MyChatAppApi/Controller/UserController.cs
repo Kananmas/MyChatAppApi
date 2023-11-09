@@ -30,6 +30,7 @@ namespace MyChatAppApi.Controller
 
                 if (User != null)
                 {
+                    result.Id = User.Id;
                     result.UserName = User.UserName;
                     result.PhoneNumber = User.PhoneNumber;
                     result.Email = User.Email;
