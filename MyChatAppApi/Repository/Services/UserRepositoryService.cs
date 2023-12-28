@@ -41,7 +41,7 @@ namespace MyChatAppApi.Repository.Services
         }
 
         public async Task DeleteUserByPhoneNumber(string phoneNumber)
-        {
+        {   
             await _users.Where(user => user.PhoneNumber == phoneNumber).ExecuteDeleteAsync();
 
             await _chatHubContext.SaveChangesAsync();

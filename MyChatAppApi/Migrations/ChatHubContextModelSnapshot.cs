@@ -48,7 +48,7 @@ namespace MyChatAppApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clients");
+                    b.ToTable("Clients", (string)null);
                 });
 
             modelBuilder.Entity("MyChatAppApi.Models.GroupSubscribtion", b =>
@@ -68,7 +68,7 @@ namespace MyChatAppApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Subscribtions");
+                    b.ToTable("Subscribtions", (string)null);
                 });
 
             modelBuilder.Entity("MyChatAppApi.Models.Message", b =>
@@ -96,7 +96,7 @@ namespace MyChatAppApi.Migrations
 
                     b.HasIndex("RoomId");
 
-                    b.ToTable("Messages");
+                    b.ToTable("Messages", (string)null);
                 });
 
             modelBuilder.Entity("MyChatAppApi.Models.Room", b =>
@@ -124,7 +124,7 @@ namespace MyChatAppApi.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("Rooms");
+                    b.ToTable("Rooms", (string)null);
                 });
 
             modelBuilder.Entity("MyChatAppApi.Models.Message", b =>

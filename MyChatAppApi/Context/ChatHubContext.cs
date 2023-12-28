@@ -21,7 +21,7 @@ namespace MyChatAppApi.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var connstring = _configuration.GetConnectionString("DefaultConnection");
+            var connstring = "Server=localhost,3306;Database=chathub;Uid=root;Pwd=IloveDocker@1234!;";
             optionsBuilder.UseMySql(connstring, ServerVersion.AutoDetect(connstring));
         }
 
