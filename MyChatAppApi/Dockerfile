@@ -5,7 +5,7 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["MyChatAppApi.csproj", "."]
-RUN dotnet restore "./MyChatAppApi.csproj"
+RUN dotnet restore "MyChatAppApi.csproj"
 COPY . .
 WORKDIR "/src/."
 RUN dotnet build "MyChatAppApi.csproj" -c Release -o /app/build

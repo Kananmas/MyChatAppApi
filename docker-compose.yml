@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+  mychatappapi:
+    image: chat-api
+    build:
+      context: .
+      dockerfile: MyChatAppApi/Dockerfile
+networks:
+  docker_network:
+    name: chat-app-network
+    external: true
+     
+

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,7 +27,9 @@ namespace MyChatAppApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
-            services.AddSingleton<ChatHubContext>();
+            services.AddDbContext<ChatHubContext>((options) => 
+            options.UseMySql(Configuration["ConnectionStrings:DefaultConnection"],
+            ServerVersion.AutoDetect(Configuration["ConnectionStrings:DefaultConnection"])));
             services.AddScoped<CommonUtillites>();
             services.AddScoped<IGroupSubscribtionRepositoryService, GroupSubscribtionRepositoryService>();
             services.AddScoped<IMessageRepositoryService, MessageRepositoryService>();
