@@ -11,12 +11,12 @@ using System.Text;
 
 namespace MyChatAppApi.Utilites
 {
-    public class CommonUtillites
+    public class CommonUtilities
     {
         private readonly IHttpContextAccessor  _contextAccessor;
 
 
-        public CommonUtillites(IHttpContextAccessor contextAccessor)
+        public CommonUtilities(IHttpContextAccessor contextAccessor)
         {
             _contextAccessor = contextAccessor;
         }

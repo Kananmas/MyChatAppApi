@@ -12,9 +12,9 @@ namespace MyChatAppApi.Controller
     public class UserController:ControllerBase
     {
         protected readonly IUserRepositoryService _userRepositoryService;
-        protected readonly CommonUtillites _commonUtillites;
+        protected readonly CommonUtilities _commonUtillites;
 
-        public UserController(IUserRepositoryService userRepositoryService, CommonUtillites commonUtillites)
+        public UserController(IUserRepositoryService userRepositoryService, CommonUtilities commonUtillites)
         {
             _userRepositoryService = userRepositoryService;
             _commonUtillites = commonUtillites;
@@ -25,7 +25,7 @@ namespace MyChatAppApi.Controller
         {
             try
             {
-                var result = new User_DTO();
+                    var result = new User_DTO();    
                 var User = await _userRepositoryService.GetUserByEmailAndPassword(email, password);
 
                 if (User != null)

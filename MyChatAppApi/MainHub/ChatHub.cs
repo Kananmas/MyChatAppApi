@@ -120,7 +120,7 @@ namespace MyChatAppApi.MainHub
 
         public async Task SendNewMessage(string Text , string SelectedRoomID)
         {
-            var commonUtillites = new CommonUtillites(_contextAccessor);
+            var commonUtillites = new CommonUtilities(_contextAccessor);
             var selectedRoomGuid = Guid.Parse(SelectedRoomID);
             var userName = commonUtillites.GetUserName();
 
@@ -140,7 +140,7 @@ namespace MyChatAppApi.MainHub
 
         public async Task SubscribeToGroup(string groupId)
         {
-            var commonUtilites = new CommonUtillites(_contextAccessor);
+            var commonUtilites = new CommonUtilities(_contextAccessor);
             var userId = commonUtilites.GetUserID();
 
             var userSubs = await _groupSubscribtionRepositoryService.GetAllUserSubs(userId);
@@ -168,7 +168,7 @@ namespace MyChatAppApi.MainHub
 
         public async Task RemoveRoom(string roomID)
         {
-            var commonUtitlites = new CommonUtillites(_contextAccessor);
+            var commonUtitlites = new CommonUtilities(_contextAccessor);
             var userID = commonUtitlites.GetUserID();
             await _groupSubscribtionRepositoryService.RemoveSubscribtionForUser(Guid.Parse(roomID), userID);
             await GetAllRooms(userID.ToString());
@@ -177,7 +177,7 @@ namespace MyChatAppApi.MainHub
         public override Task OnConnectedAsync()
         {
             
-            var commonUtilites = new CommonUtillites(_contextAccessor);
+            var commonUtilites = new CommonUtilities(_contextAccessor);
             var ID = commonUtilites.GetUserID();
             var connectionId = Context.ConnectionId;
 
@@ -191,7 +191,7 @@ namespace MyChatAppApi.MainHub
 
         public override Task OnDisconnectedAsync(Exception exception)
         {
-            var commonUtilites = new CommonUtillites(_contextAccessor);
+            var commonUtilites = new CommonUtilities(_contextAccessor);
             var ID = commonUtilites.GetUserID();
 
 

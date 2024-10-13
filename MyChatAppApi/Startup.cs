@@ -30,7 +30,7 @@ namespace MyChatAppApi
             services.AddDbContext<ChatHubContext>((options) => 
             options.UseMySql(Configuration["ConnectionStrings:DefaultConnection"],
             ServerVersion.AutoDetect(Configuration["ConnectionStrings:DefaultConnection"])));
-            services.AddScoped<CommonUtillites>();
+            services.AddScoped<CommonUtilities>();
             services.AddScoped<IGroupSubscribtionRepositoryService, GroupSubscribtionRepositoryService>();
             services.AddScoped<IMessageRepositoryService, MessageRepositoryService>();
             services.AddScoped<IRoomRepositoryService, RoomRepositoryService>();
